@@ -1,0 +1,22 @@
+[
+  {
+    "firstName": "firstName",
+    "lastName": "lastName",
+    "age": "age",
+    "phoneNumber": "",
+    "gender": "",
+    "voterInfo": {
+      "registrationId": "registrationId",
+      "registrationDate": "registrationDate",
+      "district": {},
+      "voterHistory": {}
+    },
+    "address": {
+      "street": "1234 Main St.",
+      "city": "Anytown",
+      "state": "New Stateland",
+      "country": "USA",
+      "zip": "12345"
+    }
+  }
+]

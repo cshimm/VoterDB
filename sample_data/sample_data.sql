@@ -1,16 +1,9 @@
--- Sample data for occupation_status table
-INSERT INTO `mydb`.`occupation_status` (`occupation_status_id`, `occupation_status_name`) VALUES
-(1, 'Employed'),
-(2, 'Unemployed'),
-(3, 'Student'),
-(4, 'Retired');
-
--- Sample data for person table
-INSERT INTO `mydb`.`person` (`firstName`, `lastName`, `DOB`, `occupation_status`, `voter_id`) VALUES
-('John', 'Doe', '1990-05-15', 1, 123456),
-('Jane', 'Smith', '1985-08-20', 2, 789012),
-('Michael', 'Johnson', '2000-03-10', 3, NULL),
-('Emily', 'Brown', '1975-11-25', 4, 345678);
+-- Sample data for country table
+INSERT INTO `mydb`.`country` (`country_name`, `country_code`) VALUES
+('United States', 1),
+('United Kingdom', 44),
+('Canada', 1),
+('Australia', 61);
 
 -- Sample data for state table
 INSERT INTO `mydb`.`state` (`name`) VALUES
@@ -40,6 +33,19 @@ INSERT INTO `mydb`.`address` (`street`, `country`, `zip`, `neighborhood`) VALUES
 ('789 Oak St', 3, 77001, 3),
 ('101 Pine St', 4, 33139, 4);
 
+-- Sample data for districtDesignationLookup table
+INSERT INTO `mydb`.`districtDesignationLookup` (`name`) VALUES
+('Urban'),
+('Suburban'),
+('Rural');
+
+-- Sample data for district table
+INSERT INTO `mydb`.`district` (`district_number`, `neighborhood`, `designation_id`, `population`, `total_reg_voters`, `geographical_boundary_id`) VALUES
+(1, 1, 1, 10000, 7000, 1),
+(2, 2, 2, 15000, 10000, 2),
+(3, 3, 3, 8000, 5000, 3),
+(4, 4, 1, 12000, 8000, 4);
+
 -- Sample data for election_type table
 INSERT INTO `mydb`.`election_type` (`name`) VALUES
 ('Presidential'),
@@ -54,32 +60,21 @@ INSERT INTO `mydb`.`election` (`dateOfElection`, `type`) VALUES
 ('2025-05-05', 3),
 ('2025-05-05', 4);
 
--- Sample data for districtDesignationLookup table
-INSERT INTO `mydb`.`districtDesignationLookup` (`name`) VALUES
-('Urban'),
-('Suburban'),
-('Rural');
-
--- Sample data for district table
-INSERT INTO `mydb`.`district` (`district_number`, `neighborhood`, `designation_id`, `population`, `total_reg_voters`, `geographical_boundary_id`) VALUES
-(1, 1, 1, 10000, 7000, 1),
-(2, 2, 2, 15000, 10000, 2),
-(3, 3, 3, 8000, 5000, 3),
-(4, 4, 1, 12000, 8000, 4);
-
--- Sample data for ballot table
-INSERT INTO `mydb`.`ballot` (`election`, `district`) VALUES
-(1, 1),
-(1, 2),
-(2, 3),
-(2, 4);
-
 -- Sample data for voter table
 INSERT INTO `mydb`.`voter` (`idvoter`, `registrationID`, `registrationDate`) VALUES
 (1, 'REG001', '2023-01-15'),
 (2, 'REG002', '2023-02-20'),
 (3, 'REG003', '2023-03-25'),
 (4, 'REG004', '2023-04-30');
+
+-- Sample data for voterRegistered table
+-- Assuming we have 4 voters with IDs 1 to 4
+-- Sample data for when voters were registered
+INSERT INTO `mydb`.`voterRegistered` (`voter`, `date`) VALUES
+(1, '2023-01-15'),
+(2, '2023-02-20'),
+(3, '2023-03-25'),
+(4, '2023-04-30');
 
 -- Sample data for deviceMake table
 INSERT INTO `mydb`.`deviceMake` (`name`) VALUES
@@ -102,12 +97,35 @@ INSERT INTO `mydb`.`device` (`deviceModel`, `ipaddress`) VALUES
 (3, '192.168.1.102'),
 (4, '192.168.1.103');
 
+-- Sample data for device_event_log table
+-- Assuming we have 4 devices with IDs 1 to 4 and 4 event types with IDs 1 to 4
+-- Sample data for device event logs
+INSERT INTO `mydb`.`device_event_log` (`device_id`, `event_time`, `ip_address_id`, `event_type_id`) VALUES
+(1, '2024-03-12 09:00:00', 1, 1),
+(2, '2024-03-12 10:00:00', 2, 2),
+(3, '2024-03-12 11:00:00', 3, 3),
+(4, '2024-03-12 12:00:00', 4, 4);
+
+-- Sample data for ballot table
+INSERT INTO `mydb`.`ballot` (`election`, `district`) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(2, 4);
+
 -- Sample data for voterBallot table
 INSERT INTO `mydb`.`voterBallot` (`ballot`, `voter`, `submissionDate`, `status`, `device`) VALUES
-(1, 1, '2024-11-03 10:00:00', 'Submitted', 1),
-(1, 2, '2024-11-03 10:05:00', 'Submitted', 2),
-(2, 3, '2024-11-03 10:10:00', 'Submitted', 3),
-(2, 4, '2024-11-03 10:15:00', 'Submitted', 4);
+(1, 1, '2024-11-03 10:00:00', 'Accepted', 1),
+(1, 2, '2024-11-03 10:05:00', 'Rejected', 2),
+(2, 3, '2024-11-03 10:10:00', 'Unsubmitted', 3),
+(2, 4, '2024-11-03 10:15:00', 'Accepted', 4);
+
+-- Sample data for ballotSubmitted table
+-- Assuming we have 2 ballots with IDs 1 and 2
+-- Sample data for when ballots were submitted
+INSERT INTO `mydb`.`ballotSubmitted` (`voterBallot`, `date`) VALUES
+(1, '2024-11-03 10:30:00'),
+(2, '2024-11-03 10:35:00');
 
 -- Sample data for contest table
 INSERT INTO `mydb`.`contest` (`ballot`) VALUES
@@ -119,12 +137,40 @@ INSERT INTO `mydb`.`measure` (`idballot`) VALUES
 (1),
 (2);
 
+-- Sample data for ballotMeasureOption table
+-- Assuming we have three measure options for a particular measure
+INSERT INTO `mydb`.`ballotMeasureOption` (`option_value`, `measure_id`, `total_votes`) VALUES
+('Yes', 1, 100),
+('No', 1, 150),
+('Rejected', 2, 150),
+('Approved', 2, 200);
+
 -- Sample data for candidate table
 INSERT INTO `mydb`.`candidate` (`person`, `district`) VALUES
 (1, 1),
 (2, 2),
 (3, 3),
 (4, 4);
+
+-- Sample data for position table
+INSERT INTO `mydb`.`position` (`position_name`, `term_limit`) VALUES
+('President', 4),
+('Senator', 6),
+('Governor', 4);
+
+-- Sample data for contestCandidate table
+-- Assuming we have three contests and three positions
+INSERT INTO `mydb`.`contestCandidate` (`contest_id`, `position_id`, `total_votes`) VALUES
+(1, 1, 500),
+(2, 2, 700),
+(3, 3, 900);
+
+-- Sample data for officeHeld table
+-- Assuming we have three positions, three candidates, three parties, three districts, and start/end dates
+INSERT INTO `mydb`.`officeHeld` (`position_id`, `candidate_id`, `party_id`, `start_date`, `end_date`, `district_id`) VALUES
+(1, 1, 1, '2020-01-01', '2024-01-01', 1),
+(2, 2, 2, '2020-01-01', '2026-01-01', 2),
+(3, 3, 3, '2020-01-01', '2024-01-01', 3);
 
 -- Sample data for party table
 INSERT INTO `mydb`.`party` (`name`) VALUES
@@ -133,10 +179,29 @@ INSERT INTO `mydb`.`party` (`name`) VALUES
 ('Green Party'),
 ('Libertarian Party');
 
+-- Sample data for person table
+INSERT INTO `mydb`.`person` (`firstName`, `lastName`, `DOB`, `occupation_status`, `voter_id`) VALUES
+('John', 'Doe', '1990-05-15', 1, 123456),
+('Jane', 'Smith', '1985-08-20', 2, 789012),
+('Michael', 'Johnson', '2000-03-10', 3, NULL),
+('Emily', 'Brown', '1975-11-25', 4, 345678);
+
+-- Sample data for occupation table
+-- Assuming we have 4 persons with IDs 1 to 4 and 4 occupation statuses with IDs 1 to 4
+-- Sample data for occupations
+INSERT INTO `mydb`.`occupation` (`person_id`, `occupation_name`, `occupation_status_id`) VALUES
+(1, 'Engineer', 1),
+(2, 'Teacher', 2),
+(3, 'Doctor', 3),
+(4, 'Lawyer', 4);
+
 -- Sample data for gender table
 INSERT INTO `mydb`.`gender` (`name`) VALUES
 ('Male'),
 ('Female'),
+('Non-Binary'),
+('Trans Male'),
+('Trans Female'),
 ('Other');
 
 -- Sample data for personGender table
@@ -145,38 +210,15 @@ INSERT INTO `mydb`.`gender` (`name`) VALUES
 INSERT INTO `mydb`.`personGender` (`person`, `gender`) VALUES
 (1, 1), -- John Doe is Male
 (2, 2), -- Jane Smith is Female
-(3, 1), -- Michael Johnson is Male
-(4, 2); -- Emily Brown is Female
-
--- Sample data for ballotSubmitted table
--- Assuming we have 2 ballots with IDs 1 and 2
--- Sample data for when ballots were submitted
-INSERT INTO `mydb`.`ballotSubmitted` (`ballot`, `date`) VALUES
-(1, '2024-11-03 10:30:00'),
-(2, '2024-11-03 10:35:00');
-
--- Sample data for voterRegistered table
--- Assuming we have 4 voters with IDs 1 to 4
--- Sample data for when voters were registered
-INSERT INTO `mydb`.`voterRegistered` (`voter`, `date`) VALUES
-(1, '2023-01-15'),
-(2, '2023-02-20'),
-(3, '2023-03-25'),
-(4, '2023-04-30');
-
--- Sample data for country table
-INSERT INTO `mydb`.`country` (`country_name`, `country_code`) VALUES
-('United States', 1),
-('United Kingdom', 44),
-('Canada', 1),
-('Australia', 61);
+(3, 3), -- Michael Johnson is Non-binary
+(5, 2); -- Emily Brown is Trans Female
 
 -- Sample data for degree table
 INSERT INTO `mydb`.`degree` (`degree_name`) VALUES
-('Bachelor\'s'),
-('Master\'s'),
+('Bachelors'),
+('Masters'),
 ('Ph.D.'),
-('Associate\'s');
+('Associates');
 
 -- Sample data for person_edu_degree table
 -- Assuming we have 4 persons with IDs 1 to 4, and 4 degrees with IDs 1 to 4
@@ -193,39 +235,10 @@ INSERT INTO `mydb`.`person_edu_degree` (`degree`, `completion_date`, `person_id`
 INSERT INTO `mydb`.`gender_lookup` (`gender_id`, `gender_abbr`) VALUES
 (1, 'M'), -- Male
 (2, 'F'), -- Female
-(3, 'O'); -- Other
-
--- Sample data for social_platform table
-INSERT INTO `mydb`.`social_platform` (`name`) VALUES
-('Facebook'),
-('Twitter'),
-('Instagram'),
-('LinkedIn');
-
--- Sample data for social_account table
--- Assuming we have 4 persons with IDs 1 to 4 and 4 social platforms with IDs 1 to 4
--- Sample data for social accounts
-INSERT INTO `mydb`.`social_account` (`username`, `person_id`, `social_platform_id`, `SMUID`) VALUES
-('john_doe123', 1, 1, 123),
-('jane_smith456', 2, 2, 456),
-('michael_johnson789', 3, 3, 789),
-('emily_brown012', 4, 4, 012);
-
--- Sample data for device_make table
-INSERT INTO `mydb`.`device_make` (`make_name`) VALUES
-('Apple'),
-('Samsung'),
-('Google'),
-('Microsoft');
-
--- Sample data for device_model table
--- Assuming we have 4 device makes with IDs 1 to 4
--- Sample data for device models
-INSERT INTO `mydb`.`device_model` (`make_id`, `model_name`, `model_year`) VALUES
-(1, 'iPhone 12', 2020),
-(2, 'Galaxy S20', 2020),
-(3, 'Pixel 5', 2020),
-(4, 'Surface Pro 7', 2019);
+(3, 'NB'), -- Non-binary
+(4, 'TM'); -- Trans Male
+(5, 'TF'); -- Trans Female
+(6, 'O'); -- Other
 
 -- Sample data for email table
 -- Assuming we have 4 persons with IDs 1 to 4
@@ -236,7 +249,17 @@ INSERT INTO `mydb`.`email` (`person_id`, `email_address`) VALUES
 (3, 'michael.johnson@example.com'),
 (4, 'emily.brown@example.com');
 
+-- Sample data for phone table
+-- Assuming we have 4 persons with IDs 1 to 4
+-- Sample data for phone numbers associated with persons
+INSERT INTO `mydb`.`phone` (`person_id`, `country_code`, `phone_num`) VALUES
+(1, 1, 1234567890),
+(2, 1, 2345678901),
+(3, 1, 3456789012),
+(4, 1, 4567890123);
+
 -- Sample data for event_type table
+-- TODO: Change to social media events
 INSERT INTO `mydb`.`event_type` (`event_name`) VALUES
 ('Meeting'),
 ('Conference'),
@@ -246,38 +269,12 @@ INSERT INTO `mydb`.`event_type` (`event_name`) VALUES
 -- Sample data for location table
 -- Assuming we have 4 social accounts with IDs 1 to 4 and 4 cities with IDs 1 to 4
 -- Sample data for locations associated with social accounts
+-- TODO: figure out what this table is for
 INSERT INTO `mydb`.`location` (`location_name`, `social_account_id`, `city_id`) VALUES
 ('Starbucks', 1, 1),
 ('Central Park', 2, 2),
 ('Googleplex', 3, 3),
 ('Microsoft Campus', 4, 4);
-
--- Sample data for ip_address table
--- Assuming we have 4 locations with IDs 1 to 4
--- Sample data for IP addresses associated with locations
-INSERT INTO `mydb`.`ip_address` (`ip_address`, `location_id`) VALUES
-('192.168.0.1', 1),
-('192.168.0.2', 2),
-('192.168.0.3', 3),
-('192.168.0.4', 4);
-
--- Sample data for device_event_log table
--- Assuming we have 4 devices with IDs 1 to 4 and 4 event types with IDs 1 to 4
--- Sample data for device event logs
-INSERT INTO `mydb`.`device_event_log` (`device_id`, `event_time`, `ip_address_id`, `event_type_id`) VALUES
-(1, '2024-03-12 09:00:00', 1, 1),
-(2, '2024-03-12 10:00:00', 2, 2),
-(3, '2024-03-12 11:00:00', 3, 3),
-(4, '2024-03-12 12:00:00', 4, 4);
-
--- Sample data for phone table
--- Assuming we have 4 persons with IDs 1 to 4
--- Sample data for phone numbers associated with persons
-INSERT INTO `mydb`.`phone` (`person_id`, `country_code`, `phone_num`) VALUES
-(1, 1, 1234567890),
-(2, 1, 2345678901),
-(3, 1, 3456789012),
-(4, 1, 4567890123);
 
 -- Sample data for product table
 INSERT INTO `mydb`.`product` (`name`, `price`, `recurring`) VALUES
@@ -305,6 +302,7 @@ INSERT INTO `mydb`.`purchase_products` (`qty`, `product_id`, `purchase_id`) VALU
 (2, 4, 4);
 
 -- Sample data for event_nature table
+-- TODO: change to social media event
 INSERT INTO `mydb`.`event_nature` (`event_nature_name`) VALUES
 ('Social Gathering'),
 ('Political Rally'),
@@ -314,27 +312,28 @@ INSERT INTO `mydb`.`event_nature` (`event_nature_name`) VALUES
 -- Sample data for social_event table
 -- Assuming we have 4 social accounts with IDs 1 to 4, 4 event types with IDs 1 to 4, and 4 event natures with IDs 1 to 4
 -- Sample data for social events
+-- TODO: change to social media events
 INSERT INTO `mydb`.`social_event` (`account_id`, `content`, `event_time`, `event_type_id`, `event_nature_id`) VALUES
 (1, 'Enjoying the party!', '2024-03-12 18:00:00', 1, 1),
 (2, 'Supporting the candidate!', '2024-03-13 10:00:00', 2, 2),
 (3, 'Discussing important issues.', '2024-03-14 14:00:00', 3, 3),
 (4, 'Protesting against injustice!', '2024-03-15 12:00:00', 4, 4);
 
--- Sample data for political_party table
-INSERT INTO `mydb`.`political_party` (`party_name`) VALUES
-('Party A'),
-('Party B'),
-('Party C'),
-('Party D');
+-- Sample data for social_platform table
+INSERT INTO `mydb`.`social_platform` (`name`) VALUES
+('Facebook'),
+('Twitter'),
+('Instagram'),
+('LinkedIn');
 
--- Sample data for occupation table
--- Assuming we have 4 persons with IDs 1 to 4 and 4 occupation statuses with IDs 1 to 4
--- Sample data for occupations
-INSERT INTO `mydb`.`occupation` (`person_id`, `occupation_name`, `occupation_status_id`) VALUES
-(1, 'Engineer', 1),
-(2, 'Teacher', 2),
-(3, 'Doctor', 3),
-(4, 'Lawyer', 4);
+-- Sample data for social_account table
+-- Assuming we have 4 persons with IDs 1 to 4 and 4 social platforms with IDs 1 to 4
+-- Sample data for social accounts
+INSERT INTO `mydb`.`social_account` (`username`, `person_id`, `social_platform_id`, `SMUID`) VALUES
+('john_doe123', 1, 1, 123),
+('jane_smith456', 2, 2, 456),
+('michael_johnson789', 3, 3, 789),
+('emily_brown012', 4, 4, 012);
 
 -- Sample data for hashtags table
 INSERT INTO `mydb`.`hashtags` (`hashtag_name`) VALUES
@@ -343,6 +342,12 @@ INSERT INTO `mydb`.`hashtags` (`hashtag_name`) VALUES
 ('#environment'),
 ('#education');
 
+-- Sample data for political_party table
+INSERT INTO `mydb`.`political_party` (`party_name`) VALUES
+('Democrat'),
+('Republican'),
+('Independent'),
+('Green Party');
 -- Sample data for political_affiliation_lookup table
 -- Assuming we have 4 political parties with IDs 1 to 4
 -- Sample data for political affiliations
@@ -422,30 +427,3 @@ INSERT INTO `mydb`.`event_tag` (`social_event_id`, `hashtag_id`) VALUES
 (1, 1),
 (2, 2),
 (3, 3);
-
--- Sample data for ballotMeasureOption table
--- Assuming we have three measure options for a particular measure
-INSERT INTO `mydb`.`ballotMeasureOption` (`option_value`, `measure_id`, `total_votes`) VALUES
-('Option1', 1, 100),
-('Option2', 1, 150),
-('Option3', 1, 200);
-
--- Sample data for position table
-INSERT INTO `mydb`.`position` (`position_name`, `term_limit`) VALUES
-('President', 4),
-('Senator', 6),
-('Governor', 4);
-
--- Sample data for contestCandidate table
--- Assuming we have three contests and three positions
-INSERT INTO `mydb`.`contestCandidate` (`contest_id`, `position_id`, `total_votes`) VALUES
-(1, 1, 500),
-(2, 2, 700),
-(3, 3, 900);
-
--- Sample data for officeHeld table
--- Assuming we have three positions, three candidates, three parties, three districts, and start/end dates
-INSERT INTO `mydb`.`officeHeld` (`position_id`, `candidate_id`, `party_id`, `start_date`, `end_date`, `district_id`) VALUES
-(1, 1, 1, '2020-01-01', '2024-01-01', 1),
-(2, 2, 2, '2020-01-01', '2026-01-01', 2),
-(3, 3, 3, '2020-01-01', '2024-01-01', 3);

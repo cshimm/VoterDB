@@ -1,0 +1,25 @@
+Things I did
+
+1. Move around ERD
+2. added voter Info table
+	- voterDataFeed to connect to voter info instead of person
+	- deleted voter and voterRegistered table
+3. added person_id to address table to link to a person's address
+4. added country table
+5. deleted duplicate tables in catalog tree
+6. changed neighborhoods to geographicalBoundaries because not all neighborhoods could be in a district. (like part of a neighbrohood can belong to 2 different districts because of gerrymandering)
+	- deleted city id because geographical boundaries can go across city lines
+	- geoboundary table will reference street table to ensure that the address matches the stree that is within its boundaries
+7. created table that holds streets within a geographical boundary
+	-also created a lookup table for street_type
+8. created term_limit lookup table
+9. deleted FK for candidate to district because it can be found based on what position the candidate ran for and what office they held
+	- cadndiates can run to different office position & also it was very difficult for the erd to not cross lines 
+10. added voter status lookup
+
+
+needs discussion?
+1. combined ballot and voter ballot table
+2. deleted contest table
+3. changed district_id in office_held to election_id so we can see when the election was for the specific office and it can also link the district to the office via election table
+4. took out foreign key for voter_data_feed table because all we need is voter_ballot_id to distribute all the data

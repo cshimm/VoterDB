@@ -13,25 +13,30 @@ INSERT INTO `mydb`.`state` (`name`) VALUES
 ('Florida');
 
 -- Sample data for city table
-INSERT INTO `mydb`.`city` (`name`, `state`) VALUES
+INSERT INTO `mydb`.`city` (`city_name`, `state_id`) VALUES
 ('Los Angeles', 1),
 ('New York City', 2),
 ('Houston', 3),
 ('Miami', 4);
 
--- Sample data for neighborhood table
-INSERT INTO `mydb`.`neighborhood` (`name`, `city`, `geographicalBoundaries`) VALUES
-('Hollywood', 1, 'Coordinates...'),
-('Manhattan', 2, 'Coordinates...'),
-('Downtown', 3, 'Coordinates...'),
-('South Beach', 4, 'Coordinates...');
+-- Sample data for street_type_lookup table
+INSERT INTO `mydb`.`street_type_lookup` (`street_type_name`) VALUES
+('Street'),
+('Avenue'),
+('Road'),
+('Boulevard');
+
+INSERT INTO `mydb`.`geographical_boundary` (`geo_boundary_name`, `geographicalBoundaries`) VALUES
+('City', 'Urban'),
+('County', 'Suburban'),
+('Rural Area', 'Rural');
 
 -- Sample data for address table
-INSERT INTO `mydb`.`address` (`street`, `country`, `zip`, `neighborhood`) VALUES
-('123 Main St', 1, 90001, 1),
-('456 Elm St', 2, 10001, 2),
-('789 Oak St', 3, 77001, 3),
-('101 Pine St', 4, 33139, 4);
+INSERT INTO `mydb`.`address` (`person_id`, `street`, `country_id`, `zip_code`, `city_id`, `geo_boundary_id`) VALUES
+(1, '123 Main St', 1, 10001, 1, 1),
+(2, '456 Elm St', 2, 20002, 2, 2),
+(3, '789 Oak St', 3, 30003, 3, 3),
+(4, '101 Pine St', 4, 40004, 4, 4);
 
 -- Sample data for districtDesignationLookup table
 INSERT INTO `mydb`.`districtDesignationLookup` (`name`) VALUES
@@ -40,25 +45,24 @@ INSERT INTO `mydb`.`districtDesignationLookup` (`name`) VALUES
 ('Rural');
 
 -- Sample data for district table
-INSERT INTO `mydb`.`district` (`district_number`, `neighborhood`, `designation_id`, `population`, `total_reg_voters`, `geographical_boundary_id`) VALUES
-(1, 1, 1, 10000, 7000, 1),
-(2, 2, 2, 15000, 10000, 2),
-(3, 3, 3, 8000, 5000, 3),
-(4, 4, 1, 12000, 8000, 4);
+INSERT INTO `mydb`.`district` (`district_number`, `geo_boundary_id`, `designation_id`, `population`, `total_reg_voters`) VALUES
+(1, 1, 1, 10000, 8000),
+(2, 2, 2, 15000, 12000),
+(3, 3, 3, 20000, 16000),
+(4, 4, 4, 25000, 20000);
 
 -- Sample data for election_type table
-INSERT INTO `mydb`.`election_type` (`name`) VALUES
-('Presidential'),
-('Congressional'),
-('Mayoral'),
-('Local Council');
+INSERT INTO `mydb`.`election_type` (`election_type_name`) VALUES
+('General Election'),
+('Primary Election'),
+('Special Election');
 
 -- Sample data for election table
-INSERT INTO `mydb`.`election` (`dateOfElection`, `type`) VALUES
-('2024-11-03', 1),
-('2024-11-03', 2),
-('2025-05-05', 3),
-('2025-05-05', 4);
+INSERT INTO `mydb`.`election` (`date_of_election`, `ballot_due_date`, `election_type_id`, `district_id`) VALUES
+('2024-11-03', '2024-10-15 23:59:59', 1, 1),
+('2024-11-03', '2024-10-15 23:59:59', 1, 2),
+('2024-11-03', '2024-10-15 23:59:59', 1, 3),
+('2024-11-03', '2024-10-15 23:59:59', 1, 4);
 
 -- Sample data for voter table
 INSERT INTO `mydb`.`voter` (`idvoter`, `registrationID`, `registrationDate`) VALUES
@@ -77,25 +81,25 @@ INSERT INTO `mydb`.`voterRegistered` (`voter`, `date`) VALUES
 (4, '2023-04-30');
 
 -- Sample data for deviceMake table
-INSERT INTO `mydb`.`deviceMake` (`name`) VALUES
+INSERT INTO `mydb`.`deviceMake` (`davice_make_name`) VALUES
 ('Apple'),
 ('Samsung'),
 ('Google'),
 ('Microsoft');
 
 -- Sample data for deviceModel table
-INSERT INTO `mydb`.`deviceModel` (`name`, `deviceMake`) VALUES
+INSERT INTO `mydb`.`deviceModel` (`model_name`, `device_make_id`) VALUES
 ('iPhone 12', 1),
 ('Galaxy S20', 2),
 ('Pixel 5', 3),
 ('Surface Pro 7', 4);
 
 -- Sample data for device table
-INSERT INTO `mydb`.`device` (`deviceModel`, `ipaddress`) VALUES
-(1, '192.168.1.100'),
-(2, '192.168.1.101'),
-(3, '192.168.1.102'),
-(4, '192.168.1.103');
+INSERT INTO `mydb`.`device` (`device_model_id`) VALUES
+(1),
+(2),
+(3),
+(4);
 
 -- Sample data for device_event_log table
 -- Assuming we have 4 devices with IDs 1 to 4 and 4 event types with IDs 1 to 4
@@ -106,26 +110,47 @@ INSERT INTO `mydb`.`device_event_log` (`device_id`, `event_time`, `ip_address_id
 (3, '2024-03-12 11:00:00', 3, 3),
 (4, '2024-03-12 12:00:00', 4, 4);
 
+-- Sample data for ip_address table
+INSERT INTO `mydb`.`ip_address` (`ip_address`, `location_id`) VALUES
+('192.168.1.1', 1),
+('10.0.0.1', 2),
+('172.16.0.1', 3),
+('192.0.2.1', 4);
+
+-- Sample data for event_log_type table
+INSERT INTO `mydb`.`event_log_type` (`event_log_type_name`) VALUES
+('Login'),
+('Logout'),
+('Error'),
+('Info');
+
 -- Sample data for ballot table
-INSERT INTO `mydb`.`ballot` (`election`, `district`) VALUES
+INSERT INTO `mydb`.`ballot` (`election_id`, `district_id`) VALUES
 (1, 1),
 (1, 2),
 (2, 3),
 (2, 4);
 
 -- Sample data for voterBallot table
-INSERT INTO `mydb`.`voterBallot` (`ballot`, `voter`, `submissionDate`, `status`, `device`) VALUES
+INSERT INTO `mydb`.`voter_ballot` (`voter_info`, `submission_date`, `vb_status_id`, `device`, `election_id`) VALUES
 (1, 1, '2024-11-03 10:00:00', 'Accepted', 1),
 (1, 2, '2024-11-03 10:05:00', 'Rejected', 2),
 (2, 3, '2024-11-03 10:10:00', 'Unsubmitted', 3),
 (2, 4, '2024-11-03 10:15:00', 'Accepted', 4);
 
+-- Sample data for voter_ballot_status_lookup table
+INSERT INTO `mydb`.`voter_ballot_status_lookup` (`vb_status_name`) VALUES
+('Submitted'),
+('Pending'),
+('Approved'),
+('Rejected');
+
 -- Sample data for ballotSubmitted table
--- Assuming we have 2 ballots with IDs 1 and 2
--- Sample data for when ballots were submitted
-INSERT INTO `mydb`.`ballotSubmitted` (`voterBallot`, `date`) VALUES
-(1, '2024-11-03 10:30:00'),
-(2, '2024-11-03 10:35:00');
+INSERT INTO `mydb`.`ballotSubmitted` (`ballot`, `date`) VALUES
+(1, '2024-03-11 17:00:00'),
+(2, '2024-03-11 18:00:00'),
+(3, '2024-03-11 19:00:00'),
+(4, '2024-03-11 20:00:00');
 
 -- Sample data for contest table
 INSERT INTO `mydb`.`contest` (`ballot`) VALUES
@@ -133,44 +158,53 @@ INSERT INTO `mydb`.`contest` (`ballot`) VALUES
 (2);
 
 -- Sample data for measure table
-INSERT INTO `mydb`.`measure` (`idballot`) VALUES
+INSERT INTO `mydb`.`measure` (`voter_ballot_id`) VALUES
 (1),
-(2);
+(2),
+(3),
+(4);
 
--- Sample data for ballotMeasureOption table
+-- Sample data for ballot_measure_option table
 -- Assuming we have three measure options for a particular measure
-INSERT INTO `mydb`.`ballotMeasureOption` (`option_value`, `measure_id`, `total_votes`) VALUES
+INSERT INTO `mydb`.`ballot_measure_option` (`option_value`, `measure_id`, `total_votes`) VALUES
 ('Yes', 1, 100),
 ('No', 1, 150),
 ('Rejected', 2, 150),
 ('Approved', 2, 200);
 
 -- Sample data for candidate table
-INSERT INTO `mydb`.`candidate` (`person`, `district`) VALUES
+INSERT INTO `mydb`.`candidate` (`person_id`, `political_party_id`) VALUES
 (1, 1),
 (2, 2),
 (3, 3),
 (4, 4);
 
 -- Sample data for position table
-INSERT INTO `mydb`.`position` (`position_name`, `term_limit`) VALUES
+INSERT INTO `mydb`.`position` (`position_name`, `term_limit_id`) VALUES
 ('President', 4),
 ('Senator', 6),
 ('Governor', 4);
 
--- Sample data for contestCandidate table
--- Assuming we have three contests and three positions
-INSERT INTO `mydb`.`contestCandidate` (`contest_id`, `position_id`, `total_votes`) VALUES
-(1, 1, 500),
-(2, 2, 700),
-(3, 3, 900);
+-- Sample data for term_limits_lookup table
+INSERT INTO `mydb`.`term_limits_lookup` (`term_limit_value`, `term_limit_unit`) VALUES
+(2, 'Years'),
+(4, 'Years'),
+(6, 'Years'),
+(8, 'Years');
 
--- Sample data for officeHeld table
--- Assuming we have three positions, three candidates, three parties, three districts, and start/end dates
-INSERT INTO `mydb`.`officeHeld` (`position_id`, `candidate_id`, `party_id`, `start_date`, `end_date`, `district_id`) VALUES
-(1, 1, 1, '2020-01-01', '2024-01-01', 1),
-(2, 2, 2, '2020-01-01', '2026-01-01', 2),
-(3, 3, 3, '2020-01-01', '2024-01-01', 3);
+-- Sample data for election_candidate table
+INSERT INTO `mydb`.`election_candidate` (`election_id`, `candidate_id`, `position_id`, `total_votes`) VALUES
+(1, 1, 1, 8000),
+(1, 2, 2, 12000),
+(2, 3, 3, 16000),
+(3, 4, 4, 20000);
+
+-- Sample data for office_held table
+INSERT INTO `mydb`.`office_held` (`position_id`, `candidate_id`, `political_party_id`, `start_date`, `end_date`, `election_id`) VALUES
+(1, 1, 1, '2022-01-01', '2026-01-01', 1),
+(2, 2, 2, '2022-01-01', '2026-01-01', 1),
+(3, 3, 3, '2022-01-01', '2026-01-01', 1),
+(4, 4, 4, '2022-01-01', '2026-01-01', 1);
 
 -- Sample data for party table
 INSERT INTO `mydb`.`party` (`name`) VALUES
@@ -194,6 +228,12 @@ INSERT INTO `mydb`.`occupation` (`person_id`, `occupation_name`, `occupation_sta
 (2, 'Teacher', 2),
 (3, 'Doctor', 3),
 (4, 'Lawyer', 4);
+
+-- Sample data for occupation_status table
+INSERT INTO `mydb`.`occupation_status` (`occupation_status_name`) VALUES
+('Employed'),
+('Unemployed'),
+('Retired');
 
 -- Sample data for gender table
 INSERT INTO `mydb`.`gender` (`name`) VALUES
@@ -302,12 +342,11 @@ INSERT INTO `mydb`.`purchase_products` (`qty`, `product_id`, `purchase_id`) VALU
 (2, 4, 4);
 
 -- Sample data for event_nature table
--- TODO: change to social media event
 INSERT INTO `mydb`.`event_nature` (`event_nature_name`) VALUES
-('Social Gathering'),
+('Natural Disaster'),
+('Social Event'),
 ('Political Rally'),
-('Conference'),
-('Protest');
+('Business Conference');
 
 -- Sample data for social_event table
 -- Assuming we have 4 social accounts with IDs 1 to 4, 4 event types with IDs 1 to 4, and 4 event natures with IDs 1 to 4
@@ -318,6 +357,20 @@ INSERT INTO `mydb`.`social_event` (`account_id`, `content`, `event_time`, `event
 (2, 'Supporting the candidate!', '2024-03-13 10:00:00', 2, 2),
 (3, 'Discussing important issues.', '2024-03-14 14:00:00', 3, 3),
 (4, 'Protesting against injustice!', '2024-03-15 12:00:00', 4, 4);
+
+-- Sample data for action_type table
+INSERT INTO `mydb`.`action_type` (`action_type_id`, `action_type_name`) VALUES
+(1, 'Like'),
+(2, 'Comment'),
+(3, 'Share'),
+(4, 'Follow');
+
+-- Sample data for social_action table
+INSERT INTO `mydb`.`social_action` (`social_account_id`, `social_event_id`, `action_type_id`, `content`, `event_time`) VALUES
+(1, 1, 1, 'Liked', '2023-01-01 10:00:00'),
+(2, 2, 2, 'Shared', '2023-01-02 11:00:00'),
+(3, 3, 1, 'Liked', '2023-01-03 12:00:00'),
+(4, 4, 2, 'Shared', '2023-01-04 13:00:00');
 
 -- Sample data for social_platform table
 INSERT INTO `mydb`.`social_platform` (`name`) VALUES
@@ -379,6 +432,13 @@ INSERT INTO `mydb`.`religious_affiliation_lookup` (`religion_id`) VALUES
 (3),
 (4);
 
+-- Sample data for religious_identity table
+INSERT INTO `mydb`.`religious_identity` (`preference_id`, `affiliation_lookup_code`, `intensity`, `timestamp`) VALUES
+(1, 1, 5, '2023-01-01 10:00:00'),
+(2, 2, 3, '2023-01-02 11:00:00'),
+(3, 3, 2, '2023-01-03 12:00:00'),
+(4, 4, 4, '2023-01-04 13:00:00');
+
 -- Sample data for social_issue table
 INSERT INTO `mydb`.`social_issue` (`social_issue_name`) VALUES
 ('Poverty'),
@@ -394,6 +454,20 @@ INSERT INTO `mydb`.`social_issue_lookup` (`social_issue_id`) VALUES
 (3),
 (4);
 
+-- Sample data for social_issue_view table
+INSERT INTO `mydb`.`social_issue_view` (`preference_id`, `social_issue_lookup_code`, `intensity_code`, `event_time`) VALUES
+(1, 1, 5, '2023-01-01 10:00:00'),
+(2, 2, 3, '2023-01-02 11:00:00'),
+(3, 3, 2, '2023-01-03 12:00:00'),
+(4, 4, 4, '2023-01-04 13:00:00');
+
+-- Sample data for preferences table
+INSERT INTO `mydb`.`preferences` (`person_id`) VALUES
+(1),
+(2),
+(3),
+(4);
+
 -- Sample data for social_mate_preference_lookup table
 -- Assuming we have three attributes: Age, Education, and Religion
 INSERT INTO `mydb`.`social_mate_preference_lookup` (`person_id`, `smp_attribute`, `preference`) VALUES
@@ -401,29 +475,31 @@ INSERT INTO `mydb`.`social_mate_preference_lookup` (`person_id`, `smp_attribute`
 (1, 'Education', 'Bachelors Degree'),
 (1, 'Religion', 'Christianity');
 
+-- Sample data for political_preference table
+INSERT INTO `mydb`.`political_preference` (`preference_id`, `political_affiliation_code`, `intensity`, `event_time`) VALUES
+(1, 1, 5, '2023-01-01 10:00:00'),
+(2, 2, 3, '2023-01-02 11:00:00'),
+(3, 3, 2, '2023-01-03 12:00:00'),
+(4, 4, 4, '2023-01-04 13:00:00');
+
 -- Sample data for advertisement table
 INSERT INTO `mydb`.`advertisement` (`advertisement_name`) VALUES
-('Ad1'),
-('Ad2'),
-('Ad3');
+('Product X Ad'),
+('Service Y Ad'),
+('Event Z Ad'),
+('Promotion A Ad');
 
 -- Sample data for ad_clicked table
--- Assuming we have three social accounts and three advertisements
 INSERT INTO `mydb`.`ad_clicked` (`advertisement_id`, `social_account_id`, `event_time`) VALUES
-(1, 1, '2024-03-11 08:00:00'),
-(2, 2, '2024-03-12 09:00:00'),
-(3, 3, '2024-03-13 10:00:00');
-
--- Sample data for social_action table
--- Assuming we have three social accounts, three social events, and three event types
-INSERT INTO `mydb`.`social_action` (`social_account_id`, `social_event_id`, `event_type_id`, `content`, `event_time`) VALUES
-(1, 1, 1, 'Content1', '2024-03-11 08:00:00'),
-(2, 2, 2, 'Content2', '2024-03-12 09:00:00'),
-(3, 3, 3, 'Content3', '2024-03-13 10:00:00');
+(1, 1, '2024-03-11 16:00:00'),
+(2, 2, '2024-03-11 17:00:00'),
+(3, 3, '2024-03-11 18:00:00'),
+(4, 4, '2024-03-11 19:00:00');
 
 -- Sample data for event_tag table
 -- Assuming we have three social events and three hashtags
 INSERT INTO `mydb`.`event_tag` (`social_event_id`, `hashtag_id`) VALUES
 (1, 1),
 (2, 2),
-(3, 3);
+(3, 3),
+(4, 4);

@@ -35,6 +35,24 @@ VALUES
     ('Boulevard');
 
 INSERT INTO
+    `voterdb`.`street` (
+        `street_id`,
+        `geo_boundary_id`,
+        `street_name`,
+        `street_type_id`,
+        `street_number_begin`,
+        `street_number_end`,
+        `number_is_even`,
+        `city_id`
+    )
+VALUES
+    (1, 101, 'Main', 1, '100', '200', 1, 201),
+    (2, 102, 'Elm', 2, '201', '300', 0, 201),
+    (3, 103, 'Oak', 3, '400', '500', 1, 202),
+    (4, 104, 'Maple', 1, '301', '400', 0, 202),
+    (5, 105, 'Pine', 2, '501', '600', 1, 203);
+
+INSERT INTO
     `voterdb`.`geographical_boundary` (`geo_boundary_name`, `geographicalBoundaries`)
 VALUES
     ('City', 'Urban'),
